@@ -38,17 +38,9 @@ Feature: Create Booking Endpoint
       }
     }
     """
+    * def DeleteBooking = call read('classpath:features/helpers/deleteBooking.feature')
 
-    * def authResponse = call read('classpath:features/helpers/Authentication.feature')
-    * def token = authResponse.token
-    Given url 'https://restful-booker.herokuapp.com/booking' + '/' + bookingId
-    And header Cookie = 'token=' + token
-    And header Content-Type = 'application/json'
-    When method DELETE
-    Then status 201
-    And match response == "Created"
-
-  Scenario: Negative Test to Verify When a Field is Missing from the Request Payload
+  Scenario: Testing Negative Response When a Field is Missing from the Request Payload
     Given url 'https://restful-booker.herokuapp.com/booking'
     And header Content-Type = 'application/json'
     And header Accept = 'application/json'
