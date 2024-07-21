@@ -1,9 +1,11 @@
 Feature: Create Booking Endpoint
 
+  Background:
+    * url 'https://restful-booker.herokuapp.com/booking'
+    * configure headers = { "Content-Type": "application/json", "Accept": "application/json" }
+
   Scenario: Testing Successful Response for POST Request
     Given url 'https://restful-booker.herokuapp.com/booking'
-    And header Content-Type = 'application/json'
-    And header Accept = 'application/json'
     And request
       """
       {
@@ -42,8 +44,6 @@ Feature: Create Booking Endpoint
 
   Scenario: Testing Negative Response When a Field is Missing from the Request Payload
     Given url 'https://restful-booker.herokuapp.com/booking'
-    And header Content-Type = 'application/json'
-    And header Accept = 'application/json'
     And request
       """
       {

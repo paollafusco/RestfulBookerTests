@@ -14,17 +14,24 @@ Feature: Test the delete endpoint
     When method DELETE
     Then status 201
 
-  Scenario: Testing Negative Response for a DELETE Request when bookingId is missing from the request
+  Scenario: Testing Negative Response for a DELETE Request when bookingId is missing
     Given path "booking/"
     And header Cookie = 'token=' + token
     And header Content-Type = 'application/json'
     When method DELETE
     Then status 404
 
-  Scenario: Testing Negative Response for a DELETE Request when auth token is missing from the request
+  Scenario: Testing Negative Response for a DELETE Request when auth token is missing
     Given path "booking/" + bookingId
     And header Content-Type = 'application/json'
     When method DELETE
     Then status 403
 
-  #    if I had time I would add non existing bookingId (get all from array)
+  Scenario: Testing Negative Response for Deleting a Fake Booking ID
+    * def bookingId = call read("classpath:features/helpers/generateFakeBookingID.feature")
+    * def fakeBookingId = bookingId.fakeBookingId
+    Given path 'booking/' + fakeBookingId
+    And header Content-Type = 'application/json'
+    When method DELETE
+    Then status 403
+

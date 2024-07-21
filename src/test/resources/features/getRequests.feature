@@ -1,7 +1,11 @@
 Feature: Get All Booking Ids Endpoint
 
+  Background:
+    * url "https://restful-booker.herokuapp.com"
+    * configure headers = { "Content-Type": "application/json", "Accept": "application/json" }
+
   Scenario: Testing Successful Response for GET All Booking Ids
-    Given url 'https://restful-booker.herokuapp.com/booking'
+    Given  url 'https://restful-booker.herokuapp.com/booking'
     When method GET
     Then status 200
     And match response == '#[]'
@@ -9,8 +13,6 @@ Feature: Get All Booking Ids Endpoint
 
   Scenario: Testing Successful Response for a GET Request After Adding a Booking
     Given url 'https://restful-booker.herokuapp.com/booking'
-    And header Content-Type = 'application/json'
-    And header Accept = 'application/json'
     And request
     """
     {
@@ -30,8 +32,7 @@ Feature: Get All Booking Ids Endpoint
     * def bookingId = response.bookingid
     * print bookingId
 
-    Given url 'https://restful-booker.herokuapp.com/booking' + "/" + bookingId
-    And header Accept = 'application/json'
+    Given url 'https://restful-booker.herokuapp.com/booking/' + bookingId
     When method GET
     Then status 200
     And match response ==
@@ -61,8 +62,7 @@ Feature: Get All Booking Ids Endpoint
     * def randomBookingId = randomObject.bookingid
     * print randomBookingId
 
-    Given url 'https://restful-booker.herokuapp.com/booking' + "/" + randomBookingId
-    And header Accept = 'application/json'
+    Given url 'https://restful-booker.herokuapp.com/booking/' + randomBookingId
     When method GET
     Then status 200
     And match response ==
@@ -79,6 +79,14 @@ Feature: Get All Booking Ids Endpoint
         "additionalneeds" : '#string'
       }
       """
+
+  Scenario: Testing Error Response for a GET Request for a Wrong BookingId
+    * def bookingId = call read("classpath:features/helpers/generateFakeBookingID.feature")
+    * def fakeBookingId = bookingId.fakeBookingId
+    And path 'booking/' + fakeBookingId
+    When method GET
+    Then status 404
+    And match response == "Not Found"
 
 
 

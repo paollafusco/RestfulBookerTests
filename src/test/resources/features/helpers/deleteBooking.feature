@@ -1,5 +1,5 @@
 @ignore
-Feature: Authentication
+Feature: Delete Booking
 
   Scenario: Delete Booking
     * def authResponse = call read('classpath:features/helpers/authentication.feature')
