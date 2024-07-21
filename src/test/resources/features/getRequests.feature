@@ -1,38 +1,21 @@
-Feature: Get All Booking Ids Endpoint
+@getTests
+Feature: Test the GET endpoint.
 
   Background:
-    * url "https://restful-booker.herokuapp.com"
+    * url "https://restful-booker.herokuapp.com/"
     * configure headers = { "Content-Type": "application/json", "Accept": "application/json" }
 
   Scenario: Testing Successful Response for GET All Booking Ids
-    Given  url 'https://restful-booker.herokuapp.com/booking'
+    Given path 'booking'
     When method GET
     Then status 200
     And match response == '#[]'
     And match each response == { bookingid: '#number'}
 
   Scenario: Testing Successful Response for a GET Request After Adding a Booking
-    Given url 'https://restful-booker.herokuapp.com/booking'
-    And request
-    """
-    {
-      "firstname" : "Alice",
-      "lastname" : "Brims",
-      "totalprice" : 605,
-      "depositpaid" : true,
-      "bookingdates" : {
-        "checkin" : "2024-12-11",
-        "checkout" : "2024-12-12"
-      },
-      "additionalneeds" : "Breakfast / Lunch"
-    }
-    """
-    When method POST
-    Then status 200
-    * def bookingId = response.bookingid
-    * print bookingId
-
-    Given url 'https://restful-booker.herokuapp.com/booking/' + bookingId
+    * def booking = call read("classpath:features/helpers/createBooking.feature")
+    * def bookingId = booking.bookingId
+    Given path 'booking/' + bookingId
     When method GET
     Then status 200
     And match response ==
@@ -51,7 +34,7 @@ Feature: Get All Booking Ids Endpoint
       """
 
   Scenario: Testing Successful Response for a GET Request for a Random BookingId
-    Given url 'https://restful-booker.herokuapp.com/booking'
+    Given path 'booking'
     When method GET
     Then status 200
     * def randomIndex = function(max) { return Math.floor(Math.random() * max) }
@@ -62,7 +45,7 @@ Feature: Get All Booking Ids Endpoint
     * def randomBookingId = randomObject.bookingid
     * print randomBookingId
 
-    Given url 'https://restful-booker.herokuapp.com/booking/' + randomBookingId
+    Given path 'booking/' + randomBookingId
     When method GET
     Then status 200
     And match response ==
@@ -80,10 +63,10 @@ Feature: Get All Booking Ids Endpoint
       }
       """
 
-  Scenario: Testing Error Response for a GET Request for a Wrong BookingId
-    * def bookingId = call read("classpath:features/helpers/generateFakeBookingID.feature")
-    * def fakeBookingId = bookingId.fakeBookingId
-    And path 'booking/' + fakeBookingId
+  Scenario: Testing Error Response for a GET Request for an Invalid BookingId
+    * def bookingId = call read("classpath:features/helpers/generateInvalidBookingID.feature")
+    * def invalidBookingId = bookingId.invalidBookingId
+    Given path 'booking/' + invalidBookingId
     When method GET
     Then status 404
     And match response == "Not Found"

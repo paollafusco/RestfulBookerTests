@@ -2,9 +2,9 @@
 Feature: Create booking
 
   Scenario: Create booking to be used as test data
-    Given url 'https://restful-booker.herokuapp.com/booking'
-    And header Content-Type = 'application/json'
-    And header Accept = 'application/json'
+    Given url "https://restful-booker.herokuapp.com/booking"
+    And header Content-Type = "application/json"
+    And header Accept = "application/json"
     And request
       """
       {

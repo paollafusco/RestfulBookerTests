@@ -2,8 +2,8 @@
 Feature: Authentication
 
   Scenario: Authentication
-    Given url 'https://restful-booker.herokuapp.com/auth'
-    And header Content-Type = 'application/json'
+    Given url "https://restful-booker.herokuapp.com/auth"
+    And header Content-Type = "application/json"
     And request
       """
       {
