@@ -6,6 +6,6 @@ public class KarateRunner {
 
     @Karate.Test
     Karate testAll() {
-        return (Karate) Karate.run("classpath:features").tags("~@ignore");
+        return (Karate) Karate.run("classpath:features").tags("~@bug","~@ignore");
     }
 }

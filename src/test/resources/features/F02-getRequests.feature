@@ -1,18 +1,18 @@
 @getTests
-Feature: Test the GET endpoint.
+Feature: Test the GET Booking Endpoint
 
   Background:
-    * url "https://restful-booker.herokuapp.com/"
+    * url baseUrl
     * configure headers = { "Content-Type": "application/json", "Accept": "application/json" }
 
-  Scenario: Testing Successful Response for GET All Booking Ids
+  Scenario: Testing successful response for GET all booking IDs
     Given path 'booking'
     When method GET
     Then status 200
     And match response == '#[]'
     And match each response == { bookingid: '#number'}
 
-  Scenario: Testing Successful Response for a GET Request After Adding a Booking
+  Scenario: Validate new booking is returned by GET request
     * def booking = call read("classpath:features/helpers/createBooking.feature")
     * def bookingId = booking.bookingId
     Given path 'booking/' + bookingId
@@ -32,19 +32,11 @@ Feature: Test the GET endpoint.
         "additionalneeds" : "Breakfast / Lunch"
       }
       """
+    * def DeleteBooking = call read("classpath:features/helpers/deleteBooking.feature")
 
-  Scenario: Testing Successful Response for a GET Request for a Random BookingId
-    Given path 'booking'
-    When method GET
-    Then status 200
-    * def randomIndex = function(max) { return Math.floor(Math.random() * max) }
-    * def index = randomIndex(response.length)
-    * print index
-    * def randomObject = response[index]
-    * print randomObject
-    * def randomBookingId = randomObject.bookingid
-    * print randomBookingId
-
+  Scenario: Testing successful response for a GET request for a random booking ID
+    * def randomBooking = call read("classpath:features/helpers/getRandomBookingId.feature")
+    * def randomBookingId = randomBooking.randomBookingId
     Given path 'booking/' + randomBookingId
     When method GET
     Then status 200
@@ -63,8 +55,8 @@ Feature: Test the GET endpoint.
       }
       """
 
-  Scenario: Testing Error Response for a GET Request for an Invalid BookingId
-    * def bookingId = call read("classpath:features/helpers/generateInvalidBookingID.feature")
+  Scenario: Testing error response for a GET request for an invalid booking ID
+    * def bookingId = call read("classpath:features/helpers/generateInvalidBookingId.feature")
     * def invalidBookingId = bookingId.invalidBookingId
     Given path 'booking/' + invalidBookingId
     When method GET

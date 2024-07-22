@@ -1,10 +1,10 @@
-@authenticate
-Feature: Test the authentication endpoint
+@authenticateTests
+Feature: Test the Authentication Endpoint
 
   Background:
-    * url "https://restful-booker.herokuapp.com/"
+    * url baseUrl
 
-  Scenario: Testing Successful Response with valid credentials
+  Scenario: Testing successful response with valid credentials
     Given path "auth"
     And request
       """
@@ -17,7 +17,7 @@ Feature: Test the authentication endpoint
     Then status 200
     And match response == { token: "#string"}
 
-  Scenario: Testing Negative Response with invalid username
+  Scenario: Testing negative response with invalid username
     Given path "auth"
     And request
       """
@@ -30,7 +30,7 @@ Feature: Test the authentication endpoint
     Then status 200
     And match response == { reason: "Bad credentials"}
 
-  Scenario: Testing Negative Response with invalid password
+  Scenario: Testing negative response with invalid password
     Given path "auth"
     And request
       """
