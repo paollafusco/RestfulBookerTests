@@ -7,12 +7,11 @@ Feature: Test the PATCH (Partial Update) Booking Endpoint
     * def token = authResponse.token
     * def booking = call read("classpath:features/helpers/createBooking.feature")
     * def bookingId = booking.bookingId
+    * configure headers = { "Content-Type": "application/json", "Accept": "application/json" }
 
   Scenario: Testing successful response for partially updating an existing booking
     Given path "booking/" + bookingId
     And header Cookie = "token=" + token
-    And header Content-Type = "application/json"
-    And header Accept = "application/json"
     And request
       """
       {
@@ -40,8 +39,6 @@ Feature: Test the PATCH (Partial Update) Booking Endpoint
 
   Scenario: Testing negative response for when the auth token is missing from the request
     Given path "booking/" + bookingId
-    And header Content-Type = "application/json"
-    And header Accept = "application/json"
     And request
       """
       {
@@ -57,8 +54,6 @@ Feature: Test the PATCH (Partial Update) Booking Endpoint
   Scenario: Testing negative response for when the payload uses an invalid token
     Given path "booking/" + bookingId
     And header Cookie = "token=" + 1122334455
-    And header Content-Type = "application/json"
-    And header Accept = "application/json"
     And request
       """
       {
@@ -78,8 +73,6 @@ Feature: Test the PATCH (Partial Update) Booking Endpoint
     * def invalidBookingId = bookingId.invalidBookingId
     Given path "booking/" + invalidBookingId
     And header Cookie = "token=" + token
-    And header Content-Type = "application/json"
-    And header Accept = "application/json"
     And request
     """
     {
@@ -91,3 +84,4 @@ Feature: Test the PATCH (Partial Update) Booking Endpoint
     Then status 404
     And match response == "Not Found"
     * def DeleteBooking = call read("classpath:features/helpers/deleteBooking.feature")
+

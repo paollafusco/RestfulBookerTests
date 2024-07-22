@@ -11,7 +11,6 @@ Feature: Test the DELETE Booking Endpoint
     * def bookingId = booking.bookingId
     Given path "booking/" + bookingId
     And header Cookie = "token=" + token
-    And header Content-Type = "application/json"
     When method DELETE
     Then status 201
     And match response == "Created"
@@ -19,14 +18,12 @@ Feature: Test the DELETE Booking Endpoint
   Scenario: Testing negative response for deleting a booking when the booking ID is missing
     Given path "booking/"
     And header Cookie = "token=" + token
-    And header Content-Type = "application/json"
     When method DELETE
     Then status 404
     And match response == "Not Found"
 
   Scenario: Testing negative response for when the auth token is missing from the request
     Given path "booking/123"
-    And header Content-Type = "application/json"
     When method DELETE
     Then status 403
     And match response == "Forbidden"
@@ -34,7 +31,6 @@ Feature: Test the DELETE Booking Endpoint
   Scenario: Testing negative response for when the payload uses an invalid token
     Given path "booking/123"
     And header Cookie = "token=" + 11223344
-    And header Content-Type = "application/json"
     When method DELETE
     Then status 403
     And match response == "Forbidden"
@@ -46,7 +42,6 @@ Feature: Test the DELETE Booking Endpoint
     * def invalidBookingId = bookingId.invalidBookingId
     Given path "booking/" + invalidBookingId
     And header Cookie = "token=" + token
-    And header Content-Type = "application/json"
     When method DELETE
     Then status 404
     And match response == "Not Found"

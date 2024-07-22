@@ -3,7 +3,7 @@ Feature: Test the GET Booking Endpoint
 
   Background:
     * url baseUrl
-    * configure headers = { "Content-Type": "application/json", "Accept": "application/json" }
+    * configure headers = { "Accept": "application/json" }
 
   Scenario: Testing successful response for GET all booking IDs
     Given path 'booking'

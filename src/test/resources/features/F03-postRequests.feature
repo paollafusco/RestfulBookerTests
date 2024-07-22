@@ -6,9 +6,23 @@ Feature: Test the POST Booking Endpoint
     * configure headers = { "Content-Type": "application/json", "Accept": "application/json" }
 
   Scenario: Testing successful response for creating a new booking
-    * def booking = call read("classpath:features/helpers/createBooking.feature")
-    * def bookingId = booking.bookingId
-    * def response = booking.response
+    Given url baseUrl + "booking/"
+    And request
+      """
+      {
+        "firstname" : "Alice",
+        "lastname" : "Brims",
+        "totalprice" : 605,
+        "depositpaid" : true,
+        "bookingdates" : {
+          "checkin" : "2024-12-11",
+          "checkout" : "2024-12-12"
+        },
+        "additionalneeds" : "Breakfast / Lunch"
+      }
+      """
+    When method POST
+    Then status 200
     And match response ==
       """
       {
@@ -26,6 +40,7 @@ Feature: Test the POST Booking Endpoint
         }
       }
       """
+    * def bookingId = response.bookingid
     * def DeleteBooking = call read("classpath:features/helpers/deleteBooking.feature")
 
   @bug
