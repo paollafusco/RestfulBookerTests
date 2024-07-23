@@ -64,3 +64,33 @@ Feature: Test the POST Booking Endpoint
     Then status 400
     And match response == "Bad Request"
 
+    @bug
+  #Ignored because status is not always returning 400 ("Bad Request").
+  Scenario Outline: Testing negative response when the request payload uses a field with the wrong data type
+    Given url baseUrl + "booking/"
+    And request
+      """
+      {
+        "firstname" : <firstname>,
+        "lastname" : <lastname>,
+        "totalprice" : <totalprice>,
+        "depositpaid" : <depositpaid>,
+        "bookingdates" : {
+          "checkin" : <checkin>,
+          "checkout" : <checkout>
+        },
+        "additionalneeds" : <additionalneeds>
+      }
+      """
+    When method POST
+    Then status 400
+    And match response == "Bad Request"
+
+    Examples:
+      | firstname | lastname | totalprice | depositpaid  | checkin      | checkout     | additionalneeds     |
+      | 1         | "Scott"  | 100        | true         | "2024-12-11" | "2024-12-12" | "Breakfast"         |
+      | "Julie"   | 1        | 100        | true         | "2024-12-11" | "2024-12-12" | "Breakfast"         |
+      | "Julie"   | "Scott"  | 100        | "true"       | "2024-12-11" | "2024-12-12" | "Breakfast"         |
+      | "Julie"   | "Scott"  | 100        | true         | "2024 12 11" | 2024-12-12   | "Breakfast"         |
+      | "Jim"     | "Brown"  | 111        | true         | 2018 0aa1 01 | "2019-01-01" | "Breakfast"         |
+      | "Julie"   | "Scott"  | 100        | true         | "2024-12-11" | "2024-12-12" | true                |
