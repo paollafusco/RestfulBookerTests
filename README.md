@@ -21,15 +21,16 @@ This repository contains functional tests for the [Restful-Booker](https://restf
     ├── src/
     │ ├── test/
     │ │ ├── java/
-    │ │ │ └── examples/
-    │ │ │ └── TestRunner.java
+    │ │ │ └── runner/
+    │ │ │   └── KarateRunner.java
     │ │ ├── resources/
-    │ │ │ └── helpers/ 
     │ │ │ └── features/ 
     │ │ │   └── example.feature 
+    │ │ │   └── helpers/
+    │ │ │     └── exampleHelper.feature 
     │ │ │ └── karate-config.js
     │ └── main/
-    │ ├── java/
+    │   └──java/
     ├── pom.xml
     └── README.md
 

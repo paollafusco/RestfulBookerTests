@@ -84,4 +84,3 @@ Feature: Test the PATCH (Partial Update) Booking Endpoint
     Then status 404
     And match response == "Not Found"
     * def DeleteBooking = call read("classpath:features/helpers/deleteBooking.feature")
-

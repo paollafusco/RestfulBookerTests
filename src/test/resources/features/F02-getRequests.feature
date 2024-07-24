@@ -62,13 +62,3 @@ Feature: Test the GET Booking Endpoint
     When method GET
     Then status 404
     And match response == "Not Found"
-
-
-
-
-
-
-
-
-
-
